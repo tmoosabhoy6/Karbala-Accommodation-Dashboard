@@ -1,0 +1,17 @@
+# Supabase pauses free projects after a week without traffic. A tiny read every few days keeps it awake.
+# The URL and publishable key are the same public values the website ships with.
+name: Keep database awake
+
+on:
+  schedule:
+    - cron: "17 6 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read one row
+        run: |
+          curl -fsS "https://wlwicxxczfxcbbqnxtzw.supabase.co/rest/v1/buildings?select=id&limit=1" \
+            -H "apikey: sb_publishable_L0oen8M2B4cZTgmBOTNUVQ_BZnJdRPl" > /dev/null
