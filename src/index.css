@@ -1,0 +1,179 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Limestone by day, the haram courtyard by night.
+  Grey builds the structure; colour is reserved for room status.
+*/
+:root {
+  --canvas: #f3f4f1;
+  --card: #fbfbfa;
+  --raised: #ffffff;
+  --well: #eceeeb;
+  --ink-1: #15181b;
+  --ink-2: #4a5057;
+  --ink-3: #747b83;
+  --ink-4: #a6acb2;
+  --rule: rgba(21, 24, 27, 0.08);
+  --rule-strong: rgba(21, 24, 27, 0.15);
+  --lift: 0 0 0 1px rgba(21, 24, 27, 0.06), 0 1px 2px -1px rgba(21, 24, 27, 0.06), 0 2px 6px rgba(21, 24, 27, 0.04);
+  --lift-high: 0 0 0 1px rgba(21, 24, 27, 0.07), 0 8px 24px -6px rgba(21, 24, 27, 0.14), 0 2px 6px rgba(21, 24, 27, 0.05);
+
+  --occupied: #d93d42;
+  --departing: #dc9208;
+  --free: #1f9d5c;
+  --arriving: #3268d8;
+  --blocked: #8a9096;
+  --tile: #0e7c86;
+
+  --press: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.dark {
+  --canvas: #0d1013;
+  --card: #13171b;
+  --raised: #1a1f24;
+  --well: #090b0d;
+  --ink-1: #eceeef;
+  --ink-2: #b4bac0;
+  --ink-3: #7e868e;
+  --ink-4: #535a61;
+  --rule: rgba(255, 255, 255, 0.07);
+  --rule-strong: rgba(255, 255, 255, 0.13);
+  --lift: 0 0 0 1px rgba(255, 255, 255, 0.07);
+  --lift-high: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 16px 40px -8px rgba(0, 0, 0, 0.6);
+
+  --occupied: #e5575c;
+  --departing: #dda12f;
+  --free: #2fa567;
+  --arriving: #5c88ea;
+  --blocked: #6b7279;
+  --tile: #2ba3ad;
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --color-canvas: var(--canvas);
+  --color-card: var(--card);
+  --color-raised: var(--raised);
+  --color-well: var(--well);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-occupied: var(--occupied);
+  --color-departing: var(--departing);
+  --color-free: var(--free);
+  --color-arriving: var(--arriving);
+  --color-blocked: var(--blocked);
+  --color-tile: var(--tile);
+
+  --shadow-lift: var(--lift);
+  --shadow-lift-high: var(--lift-high);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background: var(--canvas);
+    color: var(--ink-1);
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.45;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ink-1);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--tile) 28%, transparent);
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .press {
+    transition: transform 140ms var(--press), background-color 140ms ease, color 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .hatch {
+    background-image: repeating-linear-gradient(135deg, color-mix(in oklab, var(--blocked) 34%, transparent) 0 2px, transparent 2px 7px);
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-strong) transparent;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+}
+@keyframes slide {
+  from {
+    opacity: 0.4;
+    transform: translateX(24px);
+  }
+}
